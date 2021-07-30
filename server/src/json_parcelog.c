@@ -2,7 +2,7 @@
 #include "server.h"
 #include <string.h>
 
-int json_parcelog (cJSON *user_json) {
+int json_parcelog (cJSON *user_json, t_user *user_str) {
     const cJSON *name = NULL;
     int status = 0;
     
@@ -15,14 +15,14 @@ int json_parcelog (cJSON *user_json) {
         cJSON *login = cJSON_GetObjectItemCaseSensitive(user_json, "login");
         cJSON *password = cJSON_GetObjectItemCaseSensitive(user_json, "password");
 
-        char *loginc = (char*) malloc(sizeof(char)* strlen(login->valuestring));
-        strcpy(loginc, login->valuestring);
+        user_str->login = (char*) malloc(sizeof(char)* strlen(login->valuestring));
+        strcpy(user_str->login, login->valuestring);
 
-        printf("%s\n", loginc);
+        // printf("%s\n", user_str->login);
 
-        char *passwordc = (char*) malloc(sizeof(char)* strlen(password->valuestring));
-        strcpy(passwordc, password->valuestring);
-        printf("%s\n", passwordc);
+        user_str->password = (char*) malloc(sizeof(char)* strlen(password->valuestring));
+        strcpy(user_str->password, password->valuestring);
+        // printf("%s\n", user_str->password);
 
 //         if (!cJSON_IsString(login) || !cJSON_IsString(email))
 //         {

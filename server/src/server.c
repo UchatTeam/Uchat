@@ -21,8 +21,6 @@
 // }
 
 
-
-
 void * handle_client(void *user_str_void) {
 	t_user *user_str = user_str_void;
 	int fd = user_str->fd;
@@ -90,11 +88,12 @@ void * handle_client(void *user_str_void) {
 			// mx_select();
 		}
 
-		// else {
-		// 	json_parcelog (user_json);
-		// }
+		else {
+			json_parcelog (user_json, user_str);
+		}
 
-		mx_search(); 
+		mx_search(user_str); 
+		// mx_select();
 		// t_list *tmp = listnew;
 
 		// int i = 0;

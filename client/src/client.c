@@ -85,19 +85,33 @@ int main (int argc, char **argv) {
         // if (nread == 0) {
 	    // 	printf("END OF FILE occured\n");
 	    // }
-    
-        char *res = json_registr();
-        char *res1 = json_login();
-        char lbuff1[4];
+    char *res;
+
+// Вместо GTK
+    char type[20];
+    memset(type, '\0', 20);
+    size_t logread = read(STDIN_FILENO, type, sizeof type);
+// 
+    // printf("%s",type);
+    // printf("STRCMP:%d", strcmp(type, "registration"));
+
+    if(strcmp(type, "registration\n") == 0) {
+        res = json_registr();
+    }
+    else if (strcmp(type, "login\n") == 0) {
+        res = json_login();
+    }
+
+        // char lbuff1[4];
         char lbuff[4];
 
         sprintf (lbuff, "%lu", strlen(res));
         send (fd, lbuff,4,0);
         send (fd, res, strlen(res), 0);
 
-        sprintf (lbuff1, "%lu", strlen(res1));
-        send (fd, lbuff1,4,0);
-        send (fd, res1, strlen(res1), 0);
+        // sprintf (lbuff1, "%lu", strlen(res1));
+        // send (fd, lbuff1,4,0);
+        // send (fd, res1, strlen(res1), 0);
     }
     // printf("HUITA: %s", buff);
     //напечатаем в консоли то, что мы получили:
