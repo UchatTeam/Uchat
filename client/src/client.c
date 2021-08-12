@@ -1,5 +1,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -9,6 +10,9 @@
 #include <string.h>
 #include <pthread.h>
 #include <fcntl.h>
+
+void on_LoginWin_destroy();
+void gtk_min_quit();
 
 void * handle_server(void* fdser) {
     int fd = *(int*)fdser;
@@ -34,11 +38,31 @@ void * handle_server(void* fdser) {
 		// передадим на клиента ответ (он будет таким же, что мы и получили):
 		// write(fd, buffs, sread);
 	}
-	// printf("%s", create_user()); 
+	// printf("%s", create_user());
 	return NULL;
 }
 
 int main (int argc, char **argv) {
+
+    GtkBuilder      *builder;
+    GtkWidget       *window;
+
+    gtk_init(&argc, &argv);
+
+    // builder = gtk_builder_new();
+    // gtk_builder_add_from_file (builder, "glade/LoginWin.glade", NULL);
+
+    builder = gtk_builder_new_from_file("glade/LoginWin.glade");
+
+    window = GTK_WIDGET(gtk_builder_get_object(builder, "LoginWin"));
+    gtk_builder_connect_signals(builder, NULL);
+
+    g_object_unref(builder);
+
+    gtk_widget_show(window);
+    gtk_main();
+
+    //-------------***--------------------//
     // создаём сокет
     pthread_t spth;
 
@@ -54,7 +78,7 @@ int main (int argc, char **argv) {
 
     ssize_t nread;
     char buff[256];
-    
+
     pthread_create(&spth, NULL, handle_server, &fd);
 
     // int counter = 0;
@@ -62,7 +86,7 @@ int main (int argc, char **argv) {
 
     // char *new1 = json_registr();
     // FILE *file = fopen ("new.txt", "w");
-    // fprintf (file,"%s", new1); 
+    // fprintf (file,"%s", new1);
     // fclose(file);
 
     // int file1 = open ("new.txt", O_RDONLY);
@@ -91,7 +115,7 @@ int main (int argc, char **argv) {
     char type[20];
     memset(type, '\0', 20);
     size_t logread = read(STDIN_FILENO, type, sizeof type);
-// 
+//
     // printf("%s",type);
     // printf("STRCMP:%d", strcmp(type, "registration"));
 
@@ -116,6 +140,11 @@ int main (int argc, char **argv) {
     // printf("HUITA: %s", buff);
     //напечатаем в консоли то, что мы получили:
 	//  write(STDOUT_FILENO, buff, nread);
+
+    on_LoginWin_destroy();
+    gtk_min_quit();
+
+
     sleep(5);
     close (fd);
     return 0;

@@ -6,15 +6,17 @@
     <property name="can-focus">False</property>
     <property name="type">popup</property>
     <property name="resizable">False</property>
-    <property name="modal">True</property>
     <property name="window-position">center-always</property>
+    <property name="default-width">235</property>
+    <property name="default-height">450</property>
     <property name="icon-name">Login UCHAT</property>
+    <signal name="destroy" handler="on_LoginWin_destroy" swapped="no"/>
     <child>
       <object class="GtkFixed">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
-          <object class="GtkButton" id="LoginWindow">
+          <object class="GtkButton" id="RegiButt">
             <property name="label" translatable="yes">REGISTRATION</property>
             <property name="width-request">123</property>
             <property name="height-request">36</property>
@@ -28,7 +30,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
+          <object class="GtkButton" id="LoginButt">
             <property name="label" translatable="yes">LOGIN</property>
             <property name="width-request">123</property>
             <property name="height-request">36</property>
@@ -42,11 +44,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="LogiEntr">
             <property name="width-request">122</property>
             <property name="height-request">36</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">password</property>
           </object>
           <packing>
             <property name="x">35</property>
@@ -54,11 +57,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEntry">
+          <object class="GtkEntry" id="PassEntr">
             <property name="width-request">100</property>
             <property name="height-request">36</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
+            <property name="placeholder-text" translatable="yes">login</property>
           </object>
           <packing>
             <property name="x">35</property>
@@ -82,29 +86,6 @@
           <packing>
             <property name="x">69</property>
             <property name="y">24</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="RegistrationWin">
-    <property name="can-focus">False</property>
-    <child>
-      <object class="GtkFixed">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">SUBMIT</property>
-            <property name="width-request">123</property>
-            <property name="height-request">36</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-          </object>
-          <packing>
-            <property name="x">57</property>
-            <property name="y">297</property>
           </packing>
         </child>
       </object>
