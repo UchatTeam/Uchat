@@ -4,53 +4,61 @@
 
 static int callback(void *data, int argc, char **argv, char **azColName){
    int i;
-   
+   t_user *user_str = (t_user *) data;
    // int p = strlen((char *)data);
    // printf("HUITA :%d\n\n", p);
-   fprintf(stderr, "INFORM %s: ", (const char*)data);
+//   fprintf(stderr, "%s\n", (const char*)data);
    
+//   printf("argc: %d", argc);
+   
+//   printf("%s = %s\n", azColName[0], argv[0] ? argv[0] : "NULL");
    for(i = 0; i<argc; i++){
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
    }
-   
-   printf("\n");
+   //  send(user_str->fd, "successful login", 30, 0);
+   user_str->status_user = 2;
+   // printf("ЮЗЕР есть!!!!\n");
    return 0;
 }
 
-int mx_search(t_user *user) {
-   sqlite3 *db;
+int mx_search(t_user *user_str) {
+
+   sqlite3 *db = user_str->db;
    char *zErrMsg = 0;
    int rc;
    char *sql = (char *) malloc(1000);
-   const char* data = "Callback function called";
+   user_str->status_user = 0;
 
    /* Open database */
-   rc = sqlite3_open("uchat.db", &db);
-   
-   if( rc ) {
-      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-      return(0);
-   } 
-   else {
-      fprintf(stderr, "Opened database successfully\n");
-   }
-
-   //  sprintf (sql, "INSERT INTO users (login, password, email) "   \
-   //       "VALUES ('%s', '%s', '%s');", user->login, user->password, user->email);
-
+   rc = user_str->rc_db;
 
    /* Create SQL statement */
-   sprintf (sql, "SELECT * From users WHERE login = '%s'", user->login);
+   sprintf (sql, "SELECT * From users WHERE login = '%s'", user_str->login);
 
    /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback, (void*)data, &zErrMsg);
+   rc = sqlite3_exec(db, sql, callback, (void*)user_str, &zErrMsg);
    
    if( rc != SQLITE_OK ) {
-      fprintf(stderr, "Huita  SQL error: %s\n", zErrMsg);
+      // printf("YYYYY");
+      // fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
-   } else {
-      fprintf(stdout, "Operation done successfully-gooooooooooood\n");
+   } 
+   else {
+      fprintf(stdout, "Operation done successfully\n");
    }
+
+   if(user_str->status_user == LOGIN_OK) {
+      send(user_str->fd, "successful login", 16, 0);
+      // printf("LOL\n");
+   } 
+   else { 
+      send(user_str->fd, "there is no user with such login", 32, 0);
+      // printf("KEK\n");
+   } 
+
    sqlite3_close(db);
    return 0;
 }
+
+// сделать открытие базы в серваке в самом начале, вынести, передать указатель в хедер
+// onexit

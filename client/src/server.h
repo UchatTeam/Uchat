@@ -15,14 +15,23 @@
 #define MAX_CLIENTS 128
 #define BUFFER_SZ 2048
 #define ARRLEN(s) (sizeof(s) / sizeof(*s))
+#define USER_NONE 0
+#define PASSWORD_ERR 1
+#define LOGIN_OK 2
 
 int sockfds[MAX_CLIENTS];
 
 typedef struct user {
+// fd для пайпа в который я буду писать
+    int port;
+    int sock_desk;
+    int fd;
+    int status_user;
+    char *type;
     char *login;
     char *password;
     char *email;
-}           t_user;
+}              t_user;
 
 typedef struct s_list {
     void *data;
@@ -39,7 +48,8 @@ void Inet_pton (int af, const char *src, void *dst);
 char *create_user(void);
 char *json_registr(void);
 char *json_message(void);
-char *json_login(void);
+char *json_login(t_user *user);
 int mx_isspace(char c);
+int client (t_user *user_str);
 
 #endif

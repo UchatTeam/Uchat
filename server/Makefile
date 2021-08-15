@@ -20,7 +20,6 @@ MKDIR := mkdir -p
 
 CC := clang
 CFLAGS := -std=c11 -Wall -Werror -Wextra -Wpedantic -pthread -g3
-
 # ------------------ body -------------------
 
 all: $(SERVER)

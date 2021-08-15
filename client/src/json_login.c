@@ -9,8 +9,8 @@ static int my_strlen (char *str) {
     return i;
 }
 
-char *json_login(void) {
-
+char *json_login(t_user *user_str) {
+    
     char *string = NULL;
     cJSON *name = NULL;
    
@@ -27,8 +27,12 @@ while (flag == 0) {
     name = cJSON_CreateString("login");
     cJSON_AddItemToObject(user, "type", name);
 
+    printf("логин для авторизации\n");
     char buff[20];
+    char buff2[20];
+
     memset(buff, '\0', 20);
+    memset(buff2, '\0', 20);
     // printf("Flag: %d\n", flag);
 
     size_t logread = read(STDIN_FILENO, buff, sizeof buff);
@@ -48,6 +52,10 @@ while (flag == 0) {
             break;
         }
     }
+
+    // size_t validator = read (user_str->fd, buff2, 256);
+
+    // printf("VALIDATOR: %s", buff2);
 
     if (flag == 1) {
         printf("логин неверный\nвведите повторно\n"); 
@@ -73,6 +81,7 @@ while (flag == 0) {
 
         cJSON_AddItemToObject(user, "login", name);
         string = cJSON_Print(user);
+        // printf("FROM_JSON_login: %s", string);
         break;
     }   
     flag = 0;
@@ -81,6 +90,8 @@ while (flag == 0) {
 int flag1 = 0;
 
 while (flag1 == 0) {
+
+    printf("пароль для авторизации\n");
     char buff2[20];
     memset(buff2, '\0', 20);
     
@@ -122,9 +133,12 @@ while (flag1 == 0) {
 
         cJSON_AddItemToObject(user, "password", name);
         string = cJSON_Print(user);
+        // printf("FROM_JSON_password: %s", string);
         break;
     }
     flag1 = 0;
 }
+    flag = 0;
+    flag1 = 0;
     return string;
 }

@@ -19,10 +19,11 @@ MKDIR := mkdir -p
 
 CC := clang
 
-CFLAGS := -rdynamic `pkg-config --cflags --libs gtk+-3.0`\
+CFLAGS = -rdynamic `pkg-config --cflags --libs gtk+-3.0`\
           -std=c11 -Wall -Werror -Wextra -Wpedantic\
           -Wno-unused-command-line-argument -Wno-unused-variable \
-          -Wno-unused-function -Wno-unused-parameter -g
+          -Wno-unused-function -Wno-unused-parameter -g3 
+#DFLAGS = -O0 -g3 -ftrapv -fstandalone-debug -fsanitize=thread
 
 # ------------------ body -------------------
 all: $(CLIENT)

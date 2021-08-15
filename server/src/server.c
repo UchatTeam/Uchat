@@ -23,15 +23,21 @@
 
 void * handle_client(void *user_str_void) {
 	t_user *user_str = user_str_void;
+	// printf("jjjjjj %p\n", (void*) user_str->db);
 	int fd = user_str->fd;
 	ssize_t nread;
+	char *bufftxt;
 	ssize_t nreadtxt;
 	char buff[4];
 	int len = 0;
 	
+	// free (user_str->email);
+
 	while(1) {
+
         memset(buff, 0, sizeof(buff));
 		nread = read (fd, buff, 4);
+
 				// printf("%ld\n", nread);
 				// char *res = json_parcereg (buff);
 				// read возвращает количество считанных байт и поместит в nread
@@ -54,7 +60,7 @@ void * handle_client(void *user_str_void) {
 		len = atoi(buff);
 		printf("len: %d\n", len);
 
-		char *bufftxt = (char *)malloc(sizeof(char)* len);
+		bufftxt = (char *)malloc(sizeof(char)* len);
 		nreadtxt = read (fd, bufftxt, len);
 
 		if (nreadtxt == -1) {
@@ -68,13 +74,15 @@ void * handle_client(void *user_str_void) {
 					sockfds[j] = 0;
 					break;
 				}
-			}
+		}
+
 			close(fd);
 			return NULL;				
 		}
+
 // printf("\n------------------ DONE ------------------\n");
 		// t_user uslist;
-
+		printf("%s\n", bufftxt);
 		// t_list *listnew = mx_create_node(user_str);
 		cJSON *user_json = json_parcer((const char*)bufftxt);
 
@@ -85,14 +93,13 @@ void * handle_client(void *user_str_void) {
 		if (strcmp(user_str->type, "registration") == 0) {
 			json_parcereg (user_json, user_str);
 			mx_insert (user_str);
-			// mx_select();
 		}
 
 		else {
 			json_parcelog (user_json, user_str);
+			mx_search(user_str); 
 		}
 
-		mx_search(user_str); 
 		// mx_select();
 		// t_list *tmp = listnew;
 
@@ -127,16 +134,17 @@ void * handle_client(void *user_str_void) {
 		// }
 		// передадим на клиента ответ (он будет таким же, что мы и получили):
 		// write(fd, buff, nread);
+			free (bufftxt);	
 	}
 	return NULL;
 }
 
 int main (int argc, char **argv) {
-	t_user *user_str = (t_user *)malloc(sizeof(t_user));
 	// t_server *server_str = (t_server *) malloc(sizeof(t_server));
-
+	sqlite3 *base = NULL;
+    int rc = 0;
 	// mx_create_db();
-	mx_create_tb ();
+	mx_create_tb (&base, &rc);
 	// create_tables(server_str);
 
 	printf("argc: %d\n", argc);
@@ -165,6 +173,12 @@ int main (int argc, char **argv) {
 	int sockfdindex;
 
 	while(1) {
+		t_user *user_str = (t_user *)malloc(sizeof(t_user));
+		
+		user_str->db = base;
+		user_str->rc_db = rc;
+
+		printf("ppppp %p\n", (void*) user_str->db);
 		user_str->fd = Accept(servfd, (struct sockaddr *) &addr, &addrlen);
 		// printf ("fd: %d\n", fd);
 		for(sockfdindex = 0; sockfdindex < MAX_CLIENTS; sockfdindex++) {

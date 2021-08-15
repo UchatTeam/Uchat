@@ -16,23 +16,24 @@
 #define MAX_CLIENTS 128
 #define BUFFER_SZ 2048
 #define ARRLEN(s) (sizeof(s) / sizeof(*s))
+#define USER_NONE 0
+#define PASSWORD_ERR 1
+#define LOGIN_OK 2
+
+
 
 int sockfds[MAX_CLIENTS];
 
 typedef struct user {
+    sqlite3 *db;
+    int rc_db;
     int fd;
+    int status_user;
     char *type;
     char *login;
     char *password;
     char *email;
 }              t_user;
-
-typedef struct log {
-    char *type;
-    char *login;
-    char *password;
-}           t_log;
-
 
 typedef struct server {
     sqlite3 *db;
@@ -41,7 +42,7 @@ typedef struct server {
 typedef struct s_list {
     void *data;
     struct s_list *next;
-}              t_list;
+}              t_list; 
 
 
 int Socket (int domain, int type, int protocol);
@@ -57,7 +58,8 @@ int json_parcelog (cJSON *user_json, t_user*user_str);
 // t_list *mx_create_node (void *data);
 // void mx_push_back (t_list **list, void *data);
 // int mx_create_db();
-int mx_create_tb ();
+void mx_create_tb (sqlite3 **db, int *rc);
+void mx_create_tb ();
 int mx_insert ();
 int mx_select();
 int mx_search();
