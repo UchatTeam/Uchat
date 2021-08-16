@@ -11,8 +11,8 @@
 #include <gtk/gtk.h>
 #include <fcntl.h>
 
-void on_LoginWin_destroy();
-void gtk_min_quit();
+void on_LogRegWin_destroy();
+void gtk_main_quit();
 
 void * handle_server(void *user_str_void) {
 	t_user *user_str = user_str_void;
@@ -70,11 +70,11 @@ int main (int argc, char **argv) {
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new();
-    gtk_builder_add_from_file (builder, "glade/LoginWin.glade", NULL);
+    gtk_builder_add_from_file (builder, "glade/TrueWin.glade", NULL);
 
     // builder = gtk_builder_new_from_file("glade/LoginWin.glade");
 
-    window = GTK_WIDGET(gtk_builder_get_object(builder, "LoginWin"));
+    window = GTK_WIDGET(gtk_builder_get_object(builder, "LogRegWin"));
     gtk_builder_connect_signals(builder, NULL);
 
     g_object_unref(builder);
@@ -167,12 +167,14 @@ int main (int argc, char **argv) {
     //напечатаем в консоли то, что мы получили:
 	//  write(STDOUT_FILENO, buff, nread);
 
-    on_LoginWin_destroy();
-    gtk_min_quit();
-
 
     sleep(5);
     close (fd);
 
     return 0;
+}
+
+
+void on_LogRegWin_destroy() {
+gtk_main_quit();
 }
