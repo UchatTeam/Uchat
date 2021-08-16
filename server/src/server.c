@@ -97,6 +97,7 @@ void * handle_client(void *user_str_void) {
 
 		else {
 			json_parcelog (user_json, user_str);
+			// while (user_str->status_user == LOGIN_OK)
 			mx_search(user_str); 
 		}
 

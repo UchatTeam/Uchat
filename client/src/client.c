@@ -18,7 +18,6 @@ void * handle_server(void *user_str_void) {
 	t_user *user_str = user_str_void;
     int fd = user_str->sock_desk;
 
-
     ssize_t sread;
     char buffs[256];
     char *res;
@@ -46,6 +45,7 @@ void * handle_server(void *user_str_void) {
             write(STDOUT_FILENO, "\n", 1);
             printf("FROM THREAD\n");
             res = json_login(user_str);
+            printf("111111111");
             char lbuff[4];
             sprintf (lbuff, "%lu", strlen(res));
             send (fd, lbuff,4,0);
@@ -64,6 +64,9 @@ void * handle_server(void *user_str_void) {
 
 int main (int argc, char **argv) {
 
+    int status;
+    int status_addr;
+
     GtkBuilder      *builder;
     GtkWidget       *window;
 
@@ -71,9 +74,7 @@ int main (int argc, char **argv) {
 
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "glade/TrueWin.glade", NULL);
-
     // builder = gtk_builder_new_from_file("glade/LoginWin.glade");
-
     window = GTK_WIDGET(gtk_builder_get_object(builder, "LogRegWin"));
     gtk_builder_connect_signals(builder, NULL);
 
@@ -102,7 +103,6 @@ int main (int argc, char **argv) {
     ssize_t nread;
     char buff[256];
 
-    pthread_create(&spth, NULL, handle_server, user_str);
 
     // int counter = 0;
     // char *buffer;
@@ -121,7 +121,7 @@ int main (int argc, char **argv) {
     //  printf("%lu\n", strlen(json_registr()));
     // write(STDOUT_FILENO, json_registr(), 256);
 
-    while(1) {
+    // while(1) {
 
         // memset(buff, 0, sizeof(buff));
         // nread = read(STDOUT_FILENO, buff, 256);
@@ -138,6 +138,7 @@ int main (int argc, char **argv) {
 // Вместо GTK
     char type[20];
     memset(type, '\0', 20);
+    printf("READ_TYPE\n");
     size_t logread = read(STDIN_FILENO, type, sizeof type);
 //
     // printf("%s",type);
@@ -162,18 +163,24 @@ int main (int argc, char **argv) {
         // sprintf (lbuff1, "%lu", strlen(res1));
         // send (fd, lbuff1,4,0);
         // send (fd, res1, strlen(res1), 0);
-    }
+    // }
     // printf("HUITA: %s", buff);
     //напечатаем в консоли то, что мы получили:
 	//  write(STDOUT_FILENO, buff, nread);
 
+    pthread_create(&spth, NULL, handle_server, user_str);
+
+    status = pthread_join(spth, (void**)&status_addr);
+    //     if (status != SUCCESS) {
+    //     printf("main error: can't join thread, status = %d\n", status);
+    //     exit(ERROR_JOIN_THREAD);
+    // }
 
     sleep(5);
     close (fd);
 
     return 0;
 }
-
 
 void on_LogRegWin_destroy() {
 gtk_main_quit();
