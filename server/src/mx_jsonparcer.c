@@ -1,6 +1,4 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 
 cJSON *json_parcer (const char *user) {
 

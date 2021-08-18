@@ -1,6 +1,4 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 
 static int callback(void *data, int argc, char **argv, char **azColName){
    int i;
@@ -8,9 +6,9 @@ static int callback(void *data, int argc, char **argv, char **azColName){
    // int p = strlen((char *)data);
    // printf("HUITA :%d\n\n", p);
 //   fprintf(stderr, "%s\n", (const char*)data);
-   
+
 //   printf("argc: %d", argc);
-   
+
 //   printf("%s = %s\n", azColName[0], argv[0] ? argv[0] : "NULL");
    for(i = 0; i<argc; i++){
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
@@ -37,12 +35,12 @@ int mx_search(t_user *user_str) {
 
    /* Execute SQL statement */
    rc = sqlite3_exec(db, sql, callback, (void*)user_str, &zErrMsg);
-   
+
    if( rc != SQLITE_OK ) {
       // printf("YYYYY");
       // fprintf(stderr, "SQL error: %s\n", zErrMsg);
       sqlite3_free(zErrMsg);
-   } 
+   }
    else {
       fprintf(stdout, "Operation done successfully\n");
    }
@@ -50,11 +48,11 @@ int mx_search(t_user *user_str) {
    if(user_str->status_user == LOGIN_OK) {
       send(user_str->fd, "successful login", 16, 0);
       // printf("LOL\n");
-   } 
-   else { 
+   }
+   else {
       send(user_str->fd, "there is no user with such login", 32, 0);
       // printf("KEK\n");
-   } 
+   }
 
    sqlite3_close(db);
    return 0;

@@ -1,11 +1,9 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 
 int json_parcelog (cJSON *user_json, t_user *user_str) {
     const cJSON *name = NULL;
     int status = 0;
-    
+
     name = cJSON_GetObjectItemCaseSensitive(user_json, "name");
     if (cJSON_IsString(name) && (name->valuestring != NULL))
     {

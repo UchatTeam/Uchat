@@ -1,18 +1,10 @@
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
 #include "server.h"
-#include <string.h>
-#include <pthread.h>
+
 
 // static int mx_strcmp(const char*s1, const char*s2) {
-    
+
 //     while(*s1 != '\0' || *s2 != '\0') {
-//         if (*s1 != *s2) 
+//         if (*s1 != *s2)
 //         return *s1 - *s2;
 //     s1++;
 //     s2++;
@@ -30,7 +22,7 @@ void * handle_client(void *user_str_void) {
 	ssize_t nreadtxt;
 	char buff[4];
 	int len = 0;
-	
+
 	// free (user_str->email);
 
 	while(1) {
@@ -56,7 +48,7 @@ void * handle_client(void *user_str_void) {
 		// 	close(fd);
 		// 	return NULL;
 		// }
-		
+
 		len = atoi(buff);
 		printf("len: %d\n", len);
 
@@ -77,7 +69,7 @@ void * handle_client(void *user_str_void) {
 		}
 
 			close(fd);
-			return NULL;				
+			return NULL;
 		}
 
 // printf("\n------------------ DONE ------------------\n");
@@ -98,7 +90,7 @@ void * handle_client(void *user_str_void) {
 		else {
 			json_parcelog (user_json, user_str);
 			// while (user_str->status_user == LOGIN_OK)
-			mx_search(user_str); 
+			mx_search(user_str);
 		}
 
 		// mx_select();
@@ -125,7 +117,7 @@ void * handle_client(void *user_str_void) {
 		// printf("email: %s\n", ((t_user*)(listnew->data))->email);
 
 		// write(STDOUT_FILENO, bufftxt, nreadtxt);
-		
+
 		// передаём с сервака другим клиентам
 		// for (int j = 0; j < MAX_CLIENTS; j++) {
 		// 	if (fd != sockfds[j] && fd != 0) {
@@ -135,7 +127,7 @@ void * handle_client(void *user_str_void) {
 		// }
 		// передадим на клиента ответ (он будет таким же, что мы и получили):
 		// write(fd, buff, nread);
-			free (bufftxt);	
+			free (bufftxt);
 	}
 	return NULL;
 }
@@ -155,13 +147,13 @@ int main (int argc, char **argv) {
 
 	int servfd = socket(AF_INET, SOCK_STREAM, 0);
 	// это структура используется для того, что бы задать адресс по протоколу IPv4
-	struct sockaddr_in addr = {0}; 
+	struct sockaddr_in addr = {0};
 	// задаём семейство адрессов:
 	addr.sin_family = AF_INET;
 	// задаём порт на котором сервер будем слушать (так как значение порта на хосте и в сети может иметь разный порядок байт, используется фукция изменения порядка байт от хоста к сети и наоборот)
 	addr.sin_port = htons(atoi(argv[1]));
 	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	Bind (servfd, (struct sockaddr *) &addr, sizeof addr);	
+	Bind (servfd, (struct sockaddr *) &addr, sizeof addr);
 	Listen(servfd, MAX_CLIENTS);
 	// Для начала приймем одного клиента(в addr записываем информацию о клиенте)
 	socklen_t addrlen = sizeof addr;
@@ -175,7 +167,7 @@ int main (int argc, char **argv) {
 
 	while(1) {
 		t_user *user_str = (t_user *)malloc(sizeof(t_user));
-		
+
 		user_str->db = base;
 		user_str->rc_db = rc;
 
@@ -186,7 +178,7 @@ int main (int argc, char **argv) {
 			if(sockfds[sockfdindex] == 0) {
 				sockfds[sockfdindex] = user_str->fd;
 				pthread_create(&thr_id, NULL, handle_client, user_str);
-				break;	
+				break;
 			}
 		}
 
@@ -216,4 +208,3 @@ int main (int argc, char **argv) {
 	// close(listen);
 	return 0;
 }
-

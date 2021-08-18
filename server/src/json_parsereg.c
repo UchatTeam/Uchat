@@ -1,6 +1,4 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 
 int json_parcereg (cJSON *user_json, t_user *str_user) {
     int status = 0;
@@ -37,7 +35,7 @@ int json_parcereg (cJSON *user_json, t_user *str_user) {
             status = 0;
             goto end;
         }
-        
+
     //     if ((width->valuedouble == 1920) && (height->valuedouble == 1080))
     //     {
     //         status = 1;

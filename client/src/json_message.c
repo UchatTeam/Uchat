@@ -1,6 +1,4 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 // #include <../json/cJSON.c>
 
 char *json_message(void) {
@@ -29,7 +27,7 @@ char *json_message(void) {
 
     char buff2[20];
     memset(buff2, '\0', 20);
-    
+
     size_t passread = read (STDIN_FILENO, buff2, sizeof buff2);
     name = cJSON_CreateString(buff2);
         if (name == NULL)
@@ -41,4 +39,3 @@ char *json_message(void) {
     string = cJSON_Print(user);
     return string;
 }
-

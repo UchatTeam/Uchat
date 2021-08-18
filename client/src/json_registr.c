@@ -1,6 +1,4 @@
-#include <cJSON.h>
 #include "server.h"
-#include <string.h>
 // #include <../json/cJSON.c>
 
 static int my_strlen (char *str) {
@@ -13,7 +11,7 @@ char *json_registr(void) {
 
     char *string = NULL;
     cJSON *name = NULL;
-   
+
     cJSON *user = cJSON_CreateObject();
         if (user == NULL)
         {
@@ -22,8 +20,8 @@ char *json_registr(void) {
 
 int flag = 0;
 
-while (flag == 0) { 
-    
+while (flag == 0) {
+
     name = cJSON_CreateString("registration");
     cJSON_AddItemToObject(user, "type", name);
 
@@ -50,9 +48,9 @@ while (flag == 0) {
     }
 
     if (flag == 1) {
-        printf("логин неверный\nвведите повторно\n"); 
+        printf("логин неверный\nвведите повторно\n");
     }
-  
+
     // printf("Flagn: %d\n", flag);
 
     if (flag == 0) {
@@ -74,7 +72,7 @@ while (flag == 0) {
         cJSON_AddItemToObject(user, "login", name);
         string = cJSON_Print(user);
         break;
-    }   
+    }
     flag = 0;
 }
 
@@ -83,7 +81,7 @@ int flag1 = 0;
 while (flag1 == 0) {
     char buff2[20];
     memset(buff2, '\0', 20);
-    
+
     size_t passread = read (STDIN_FILENO, buff2, sizeof buff2);
 
     if (my_strlen (buff2) == 0) {
@@ -101,7 +99,7 @@ while (flag1 == 0) {
     }
 
     if (flag1 == 1) {
-        printf("пароль некорректный\nвведите повторно\n"); 
+        printf("пароль некорректный\nвведите повторно\n");
     }
 
     if (flag1 == 0) {
@@ -133,7 +131,7 @@ int flag2 = 0;
 while (flag2 == 0) {
     char buff3[20];
     memset(buff3, '\0', 20);
-    
+
     size_t emread = read (STDIN_FILENO, buff3, sizeof buff3);
 
      if (my_strlen (buff3) == 0) {
@@ -151,11 +149,11 @@ while (flag2 == 0) {
     }
 
     if (flag2 == 1) {
-        printf("email некорректный\nвведите повторно\n"); 
+        printf("email некорректный\nвведите повторно\n");
     }
 
     if (flag2 == 0) {
-               
+
         char bufftmp3[20];
         int j = 0;
 
@@ -182,4 +180,3 @@ while (flag2 == 0) {
 // int main() {
 //     printf("%s", create_user());
 // }
-
