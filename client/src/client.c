@@ -67,6 +67,7 @@ int main (int argc, char **argv) {
     int status;
     int status_addr;
 
+
     GtkBuilder      *builder;
     GtkWidget       *window;
 
