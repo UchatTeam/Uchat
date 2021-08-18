@@ -2,7 +2,35 @@
 <!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
-  <object class="GtkWindow" id="LogRegWin">
+  <object class="GtkWindow" id="Load_Win">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkFixed" id="LoadingLogWin">
+        <property name="width-request">32</property>
+        <property name="height-request">32</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkToggleButton" id="backToLog">
+            <property name="label" translatable="yes">BACK</property>
+            <property name="width-request">100</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="inconsistent">True</property>
+            <signal name="clicked" handler="on_backToLog_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">71</property>
+            <property name="y">369</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="Log_Win">
     <property name="width-request">235</property>
     <property name="height-request">450</property>
     <property name="can-focus">False</property>
@@ -98,147 +126,115 @@
             <property name="title" translatable="yes">page0</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="Reg_Win">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkFixed" id="RegWin">
+        <property name="width-request">32</property>
+        <property name="height-request">32</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
         <child>
-          <object class="GtkFixed" id="LoadingLogWin">
-            <property name="width-request">32</property>
-            <property name="height-request">32</property>
+          <object class="GtkEntry" id="LoginField1">
+            <property name="name">LogField</property>
+            <property name="width-request">36</property>
+            <property name="height-request">20</property>
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkToggleButton" id="backToLog">
-                <property name="label" translatable="yes">BACK</property>
-                <property name="width-request">100</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="focus-on-click">False</property>
-                <property name="receives-default">True</property>
-                <property name="inconsistent">True</property>
-                <signal name="clicked" handler="on_backToLog_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">71</property>
-                <property name="y">369</property>
-              </packing>
-            </child>
+            <property name="can-focus">True</property>
+            <property name="max-length">12</property>
+            <property name="xalign">0.5</property>
+            <property name="placeholder-text" translatable="yes">login</property>
           </object>
           <packing>
-            <property name="name">page1</property>
-            <property name="title" translatable="yes">page1</property>
-            <property name="position">1</property>
+            <property name="x">35</property>
+            <property name="y">144</property>
           </packing>
         </child>
         <child>
-          <object class="GtkFixed" id="RegWin">
-            <property name="width-request">32</property>
-            <property name="height-request">32</property>
+          <object class="GtkEntry" id="ConfirmPassField1">
+            <property name="width-request">36</property>
+            <property name="height-request">20</property>
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkEntry" id="LoginField1">
-                <property name="name">LogField</property>
-                <property name="width-request">36</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="max-length">12</property>
-                <property name="xalign">0.5</property>
-                <property name="placeholder-text" translatable="yes">login</property>
-              </object>
-              <packing>
-                <property name="x">35</property>
-                <property name="y">144</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="ConfirmPassField1">
-                <property name="width-request">36</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="max-length">10</property>
-                <property name="visibility">False</property>
-                <property name="invisible-char">x</property>
-                <property name="xalign">0.5</property>
-                <property name="placeholder-text" translatable="yes">confirm pass</property>
-              </object>
-              <packing>
-                <property name="x">35</property>
-                <property name="y">262</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="SubmitRegist">
-                <property name="label" translatable="yes">SUBMIT</property>
-                <property name="width-request">100</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="focus-on-click">False</property>
-                <property name="receives-default">True</property>
-                <property name="inconsistent">True</property>
-                <signal name="clicked" handler="on_SubmitRegist_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">71</property>
-                <property name="y">328</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleButton" id="Back">
-                <property name="label" translatable="yes">BACK</property>
-                <property name="width-request">100</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="focus-on-click">False</property>
-                <property name="receives-default">True</property>
-                <property name="inconsistent">True</property>
-                <signal name="clicked" handler="on_Back_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="x">71</property>
-                <property name="y">369</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="CPassField">
-                <property name="width-request">36</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="max-length">10</property>
-                <property name="visibility">False</property>
-                <property name="invisible-char">x</property>
-                <property name="xalign">0.5</property>
-                <property name="placeholder-text" translatable="yes">password</property>
-              </object>
-              <packing>
-                <property name="x">35</property>
-                <property name="y">223</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkEntry" id="EmailField">
-                <property name="name">LogField</property>
-                <property name="width-request">36</property>
-                <property name="height-request">20</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="max-length">30</property>
-                <property name="xalign">0.5</property>
-                <property name="placeholder-text" translatable="yes">email</property>
-              </object>
-              <packing>
-                <property name="x">35</property>
-                <property name="y">184</property>
-              </packing>
-            </child>
+            <property name="can-focus">True</property>
+            <property name="max-length">10</property>
+            <property name="visibility">False</property>
+            <property name="invisible-char">x</property>
+            <property name="xalign">0.5</property>
+            <property name="placeholder-text" translatable="yes">confirm pass</property>
           </object>
           <packing>
-            <property name="name">page2</property>
-            <property name="title" translatable="yes">page2</property>
-            <property name="position">2</property>
+            <property name="x">35</property>
+            <property name="y">262</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="SubmitRegist">
+            <property name="label" translatable="yes">SUBMIT</property>
+            <property name="width-request">100</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="inconsistent">True</property>
+            <signal name="clicked" handler="on_SubmitRegist_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">71</property>
+            <property name="y">328</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToggleButton" id="Back">
+            <property name="label" translatable="yes">BACK</property>
+            <property name="width-request">100</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="inconsistent">True</property>
+            <signal name="clicked" handler="on_Back_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="x">71</property>
+            <property name="y">369</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="CPassField">
+            <property name="width-request">36</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="max-length">10</property>
+            <property name="visibility">False</property>
+            <property name="invisible-char">x</property>
+            <property name="xalign">0.5</property>
+            <property name="placeholder-text" translatable="yes">password</property>
+          </object>
+          <packing>
+            <property name="x">35</property>
+            <property name="y">223</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="EmailField">
+            <property name="name">LogField</property>
+            <property name="width-request">36</property>
+            <property name="height-request">20</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="max-length">30</property>
+            <property name="xalign">0.5</property>
+            <property name="placeholder-text" translatable="yes">email</property>
+          </object>
+          <packing>
+            <property name="x">35</property>
+            <property name="y">184</property>
           </packing>
         </child>
       </object>

@@ -11,8 +11,13 @@
 #include <gtk/gtk.h>
 #include <fcntl.h>
 
-void on_LogRegWin_destroy();
-void gtk_main_quit();
+GtkBuilder     *builder;
+
+void clicked(GtkWidget* sender, GtkWindow* window)
+{
+    gtk_widget_hide(gtk_widget_get_toplevel(sender));
+    gtk_widget_show_all(GTK_WIDGET(window));
+}
 
 void * handle_server(void *user_str_void) {
 	t_user *user_str = user_str_void;
@@ -67,21 +72,35 @@ int main (int argc, char **argv) {
     int status;
     int status_addr;
 
-
-    GtkBuilder      *builder;
-    GtkWidget       *window;
+    GtkButton *Button_Log, *Button_Reg, *Button_Sub, *Button_Back1, *Button_Back2;
+    GtkWindow *Login_Win, *Win_Reg, *Win_Load;
 
     gtk_init(&argc, &argv);
 
     builder = gtk_builder_new();
     gtk_builder_add_from_file (builder, "glade/TrueWin.glade", NULL);
     // builder = gtk_builder_new_from_file("glade/LoginWin.glade");
-    window = GTK_WIDGET(gtk_builder_get_object(builder, "LogRegWin"));
+
+    Login_Win = GTK_WINDOW(gtk_builder_get_object(builder, "Log_Win"));
+    Win_Reg = GTK_WINDOW(gtk_builder_get_object(builder, "Reg_Win"));
+    Win_Load = GTK_WINDOW(gtk_builder_get_object(builder, "Load_Win"));
+
+    Button_Log = GTK_BUTTON(gtk_builder_get_object(builder, "LoginButton"));
+    g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Win_Load);
+    Button_Reg = GTK_BUTTON(gtk_builder_get_object(builder, "RegistButt"));
+    g_signal_connect(Button_Reg, "clicked", G_CALLBACK(clicked), Win_Reg);
+    Button_Sub = GTK_BUTTON(gtk_builder_get_object(builder, "SubmitRegist"));
+    g_signal_connect(Button_Sub, "clicked", G_CALLBACK(clicked), Win_Load);
+    Button_Back1 = GTK_BUTTON(gtk_builder_get_object(builder, "Back1"));
+    g_signal_connect(Button_Back1, "clicked", G_CALLBACK(clicked), Login_Win);
+    Button_Back2 = GTK_BUTTON(gtk_builder_get_object(builder, "backToLog"));
+    g_signal_connect(Button_Back2, "clicked", G_CALLBACK(clicked), Login_Win);
+
     gtk_builder_connect_signals(builder, NULL);
 
     g_object_unref(builder);
 
-    gtk_widget_show(window);
+    gtk_widget_show_all(GTK_WIDGET(Login_Win));
     gtk_main();
 
     // создаём сокет
@@ -183,6 +202,7 @@ int main (int argc, char **argv) {
     return 0;
 }
 
-void on_LogRegWin_destroy() {
-gtk_main_quit();
+void on_LogRegWin_destroy()
+{
+    gtk_main_quit();
 }
