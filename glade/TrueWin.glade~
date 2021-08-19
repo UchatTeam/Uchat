@@ -361,7 +361,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">ULogo.png</property>
+                <property name="pixbuf">..\..\Downloads\Telegram Desktop\ULogo.png</property>
               </object>
               <packing>
                 <property name="x">37</property>
