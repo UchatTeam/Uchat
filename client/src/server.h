@@ -111,7 +111,7 @@ typedef struct s_chat_win {
 }                t_chat_win;
 
 
-extern u_char *chat;
+// extern u_char *chat;
 extern t_reg_win reg_win;
 
 
@@ -128,9 +128,8 @@ void mx_create_tb (sqlite3 **db, int *rc);
 void Listen (int sockfd, int backlog);
 cJSON *json_parcer (const char *user);
 char *json_login(t_user *user);
+char *json_registr();
 int client (t_user *user_str);
-char *create_user(void);
-char *json_registr(void);
 char *json_message(void);
 int mx_isspace(char c);
 void mx_create_tb ();

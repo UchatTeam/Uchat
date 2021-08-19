@@ -87,10 +87,15 @@ void * handle_client(void *user_str_void) {
 			mx_insert (user_str);
 		}
 
-		else {
+		if (strcmp(user_str->type, "login") == 0) {
 			json_parcelog (user_json, user_str);
 			// while (user_str->status_user == LOGIN_OK)
 			mx_search(user_str);
+		}
+
+		if (strcmp(user_str->type, "message") == 0){
+			printf("Передаваемое: %s\n", bufftxt);
+			json_parsemsg (user_json);  
 		}
 
 		// mx_select();

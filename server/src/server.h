@@ -64,5 +64,6 @@ void mx_create_tb ();
 int mx_insert ();
 int mx_select();
 int mx_search();
+int json_parsemsg (cJSON *user_json);
 
 #endif
