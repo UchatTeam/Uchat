@@ -237,7 +237,11 @@
     </child>
   </object>
   <object class="GtkWindow" id="Load_Win">
+    <property name="width-request">235</property>
+    <property name="height-request">450</property>
     <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window-position">center</property>
     <child>
       <object class="GtkFixed" id="LoadingLogWin">
         <property name="width-request">32</property>
@@ -361,7 +365,7 @@
                 <property name="height-request">80</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">..\..\Downloads\Telegram Desktop\ULogo.png</property>
+                <property name="pixbuf">ULogo.png</property>
               </object>
               <packing>
                 <property name="x">37</property>
@@ -378,7 +382,11 @@
     </child>
   </object>
   <object class="GtkWindow" id="Reg_Win">
+    <property name="width-request">235</property>
+    <property name="height-request">450</property>
     <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="window-position">center</property>
     <child>
       <object class="GtkFixed" id="RegWin">
         <property name="width-request">32</property>
