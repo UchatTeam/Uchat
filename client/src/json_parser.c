@@ -1,6 +1,6 @@
 #include "server.h"
 
-cJSON *json_parser (const char *user) {
+cJSON *json_parcer (const char *user) {
 
     cJSON *user_json = cJSON_Parse(user);
 

@@ -40,10 +40,19 @@ typedef struct server {
     sqlite3 *db;
 }              t_server;
 
+
+typedef struct login {
+    int fd;
+    char *login;
+}             t_login;
+
+
 typedef struct s_list {
     void *data;
     struct s_list *next;
 }              t_list;
+
+
 
 
 void Connect(int sockfd, struct sockaddr *addr, socklen_t addrlen);
@@ -58,12 +67,13 @@ int Socket (int domain, int type, int protocol);
 void mx_create_tb (sqlite3 **db, int *rc);
 // t_list *mx_create_node (void *data);
 void Listen (int sockfd, int backlog);
-cJSON *json_parcer (const char *user);
+cJSON *json_parser (const char *user);
 // int mx_create_db();
 void mx_create_tb ();
 int mx_insert ();
 int mx_select();
 int mx_search();
 int json_parsemsg (cJSON *user_json);
+char *json_login_resp (char* response);
 
 #endif

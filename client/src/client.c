@@ -33,23 +33,59 @@ void * handle_server(void *user_str_void) {
 			return NULL;
 		}
         // напечатаем в консоли то, что мы получили:
-            // write(STDOUT_FILENO, buffs, sread);
+            //  write(STDOUT_FILENO, buffs, sread);
+                // return 0;
 
-        if (strcmp(buffs, "there is no user with such login") == 0) {
-            write(STDOUT_FILENO, buffs, sread);
-            write(STDOUT_FILENO, "\n", 1);
-            printf("FROM THREAD\n");
-            res = json_login(user_str);
-            printf("111111111");
-            char lbuff[4];
-            sprintf (lbuff, "%lu", strlen(res));
-            send (fd, lbuff,4,0);
-            send (fd, res, strlen(res), 0);
+        cJSON *user_json = json_parcer((const char*)buffs);
+
+		json_parcetype(user_json, user_str);
+        
+        printf("ТИП %s\n", user_str->type);
+
+        //  int cmp = strcmp(user_str->type, "message");
+        //  printf ("CMP: %d\n", cmp);
+
+
+        if (strcmp(user_str->type, "login_response") == 0) {
+            // printf("РЕЗУЛЬТАТ:\n");
+
+
+            char *result;
+                result = response_parse (user_json);
+                printf("РЕЗУЛЬТАТ:%s\n", result);
+
+            if (strcmp(result, "there is no user with such login") == 0) {
+                write(STDOUT_FILENO, result, strlen(result));
+                write(STDOUT_FILENO, "\n", 1);
+                printf("FROM THREAD\n");
+                res = json_login(user_str);
+                printf("111111111");
+                char lbuff[4];
+                sprintf (lbuff, "%lu", strlen(res));
+                send (fd, lbuff,4,0);
+                send (fd, res, strlen(res), 0);
+            }
+
+              // else if (strcmp(user_str->type, "message") == 0) {
+        //      json_parsemsg (user_json);
+        // }
+
+            else {
+                write(STDOUT_FILENO, result, strlen(result));
+                write(STDOUT_FILENO, "\n", 1);
+                char *message = json_message();
+                char lmsg[4];
+                sprintf (lmsg, "%lu", strlen(message));
+                send (fd, lmsg,4,0);
+                send (fd, message, strlen(message), 0);
+                // user_str->status_user = 2;
+            }
         }
-        else {
-            write(STDOUT_FILENO, buffs, sread);
-            // user_str->status_user = 2;
+
+        else if (strcmp(user_str->type, "message") == 0) {
+             json_parsemsg (user_json);
         }
+
         // передадим на клиента ответ (он будет таким же, что мы и получили):
 		// write(fd, buffs, sread);
 	}
@@ -153,21 +189,28 @@ int main (int argc, char **argv) {
 //
     // printf("%s",type);
     // printf("STRCMP:%d", strcmp(type, "registration"));
+     char lbuff[4];
 
     if(strcmp(type, "registration\n") == 0) {
         res = json_registr();
-        // printf("Registration done successfully\n");
+        sprintf (lbuff, "%lu", strlen(res));
+        send (fd, lbuff,4,0);
+        send (fd, res, strlen(res), 0);
+        printf("Registration done successfully\n");
+        char *res1 = json_login(user_str);
+        sprintf (lbuff, "%lu", strlen(res1));
+        send (fd, lbuff,4,0);
+        send (fd, res1, strlen(res1), 0);
     }
     else if (strcmp(type, "login\n") == 0) {
         printf("FROM MAIN");
         res = json_login(user_str);
-    }
-        // char lbuff1[4];
-        char lbuff[4];
-
         sprintf (lbuff, "%lu", strlen(res));
         send (fd, lbuff,4,0);
         send (fd, res, strlen(res), 0);
+    }
+        // char lbuff1[4];
+        // char lbuff[4];
 
     // printf("USER_STATUS: %d\n", user_str->status_user);
         // sprintf (lbuff1, "%lu", strlen(res1));

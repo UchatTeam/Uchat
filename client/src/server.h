@@ -136,7 +136,10 @@ void mx_create_tb ();
 int mx_insert ();
 int mx_select();
 int mx_search();
-
+cJSON *json_parcer (const char *user);
+int json_parcetype (cJSON *user_json, t_user *str_user);
+char *response_parse (cJSON *user_json);
+int json_parsemsg (cJSON *user_json);
 
 // void mx_push_back (t_list **list, void *data);
 // t_list *mx_create_node (void *data);

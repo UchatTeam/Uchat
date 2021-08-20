@@ -76,7 +76,7 @@ void * handle_client(void *user_str_void) {
 		// t_user uslist;
 		printf("%s\n", bufftxt);
 		// t_list *listnew = mx_create_node(user_str);
-		cJSON *user_json = json_parcer((const char*)bufftxt);
+		cJSON *user_json = json_parser((const char*)bufftxt);
 
 		json_parcetype(user_json, user_str);
 		// printf("aaaaa");
@@ -91,11 +91,18 @@ void * handle_client(void *user_str_void) {
 			json_parcelog (user_json, user_str);
 			// while (user_str->status_user == LOGIN_OK)
 			mx_search(user_str);
+			
 		}
 
-		if (strcmp(user_str->type, "message") == 0){
+		if (strcmp(user_str->type, "message") == 0) {
 			printf("Передаваемое: %s\n", bufftxt);
 			json_parsemsg (user_json);  
+				for (int j = 0; j < MAX_CLIENTS; j++) {
+					if (fd != sockfds[j] && fd != 0) {
+						// printf("Huita");
+						send(sockfds[j], bufftxt, 256, 0);
+					}
+				}
 		}
 
 		// mx_select();

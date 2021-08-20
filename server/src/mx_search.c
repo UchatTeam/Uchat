@@ -45,14 +45,26 @@ int mx_search(t_user *user_str) {
       fprintf(stdout, "Operation done successfully\n");
    }
 
+    char response [30];
+
    if(user_str->status_user == LOGIN_OK) {
-      send(user_str->fd, "successful login", 16, 0);
-      // printf("LOL\n");
+      
+      strcpy(response, "successful login");
    }
    else {
-      send(user_str->fd, "there is no user with such login", 32, 0);
-      // printf("KEK\n");
+      strcpy(response, "there is no user with such login");
    }
+   
+   char *res = json_login_resp (response);
+      // printf("ответ: %s\n", res);
+   // if(user_str->status_user == LOGIN_OK) {
+      send(user_str->fd, res, strlen(res), 0);
+   //    // printf("LOL\n");
+   // }
+   // else {
+   //    send(user_str->fd, "there is no user with such login", 32, 0);
+   //    // printf("KEK\n");
+   // }
 
    // sqlite3_close(db);
    return 0;

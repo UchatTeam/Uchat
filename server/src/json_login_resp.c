@@ -1,6 +1,6 @@
 #include "server.h"
 
-char *json_message(void) {
+char *json_login_resp (char* response) {
 
    char *string = NULL;
     cJSON *name = NULL;
@@ -11,25 +11,21 @@ char *json_message(void) {
             exit(2);
         }
     
-    name = cJSON_CreateString("message");
+    name = cJSON_CreateString("login_response");
     cJSON_AddItemToObject(user, "type", name);
 
-    printf("введите сообщение\n");
-    char buff[1000];
+    // size_t logread = read(STDIN_FILENO, buff, sizeof buff);
 
-    size_t logread = read(STDIN_FILENO, buff, sizeof buff);
-
-        name = cJSON_CreateString(buff);
+        name = cJSON_CreateString(response);
             if (name == NULL)
             {
             exit(2);
             }
 
-        cJSON_AddItemToObject(user, "message", name);
+        cJSON_AddItemToObject(user, "login_response", name);
         string = cJSON_Print(user);
         // printf("FROM_JSON_login: %s", string);
         // break;
 
     return string;
 }
-
