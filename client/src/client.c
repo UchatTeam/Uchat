@@ -4,12 +4,25 @@
 // void set_button_clicked(GtkEntry *button, gpointer type);
 
 GtkBuilder     *builder;
+GtkButton      *Button_Log, *Button_Reg, *Button_Sub, *Button_Back1, *Button_Back2;
+GtkWindow      *Login_Win, *Win_Reg, *Win_Load;
+GtkEntry       *Login_Field, *Pass_Field;
+
 
 void clicked(GtkWidget* sender, GtkWindow* window)
 {
     gtk_widget_hide(gtk_widget_get_toplevel(sender));
     gtk_widget_show_all(GTK_WIDGET(window));
 }
+
+void button_clicked(GtkEntry *LoginField, gpointer data, GtkWidget *widget)
+{
+    const gchar *text = gtk_entry_get_text(Login_Field);
+    //const gchar *pass = gtk_entry_get_text(Pass_Field);
+    g_print("clicked %s\n", text);
+    //g_print("clicked %s\n", pass);
+}
+
 
 void * handle_server(void *user_str_void) {
 	t_user *user_str = user_str_void;
@@ -64,9 +77,6 @@ int main (int argc, char **argv) {
     int status;
     int status_addr;
 
-    GtkButton *Button_Log, *Button_Reg, *Button_Sub, *Button_Back1, *Button_Back2;
-    GtkWindow *Login_Win, *Win_Reg, *Win_Load;
-    GtkEntry *Login_Field, *Pass_Field;
 
     gtk_init(&argc, &argv);
 
@@ -88,17 +98,16 @@ int main (int argc, char **argv) {
     g_signal_connect(Button_Back1, "clicked", G_CALLBACK(clicked), Login_Win);
     Button_Back2 = GTK_BUTTON(gtk_builder_get_object(builder, "backToLog"));
     g_signal_connect(Button_Back2, "clicked", G_CALLBACK(clicked), Login_Win);
+    
+    
     Login_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
-    g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Login_Win);
-    Pass_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
-    g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Login_Win);
+    g_signal_connect(Login_Field, "connect", G_CALLBACK(button_clicked), Win_Load);
+    //Pass_Field = GTK_ENTRY(gtk_builder_get_object(builder, "PassField"));
 
+    gtk_widget_show_all(GTK_WIDGET(Login_Win));
+/*     gtk_label_set_width_chars(GTK_LABEL(Login_Field), 12);
+    gtk_label_set_width_chars(GTK_LABEL(Pass_Field), 12); */
 
-    gtk_label_set_width_chars(GTK_LABEL(Login_Field), 12);
-    gtk_label_set_width_chars(GTK_LABEL(Pass_Field), 12);
-
-    Login_Field = gtk_entry_new();
-    Pass_Field = gtk_entry_new();
 
     // set_button_clicked(GtkEntry *button, gpointer type){
     // gtk_entry_set_text(GTK_ENTRY((GtkWidget*) Login_Field), "GtkEntry");
@@ -111,7 +120,6 @@ int main (int argc, char **argv) {
 
     g_object_unref(builder);
 
-    gtk_widget_show_all(GTK_WIDGET(Login_Win));
     gtk_main();
 
     // создаём сокет
