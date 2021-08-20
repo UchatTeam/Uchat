@@ -54,7 +54,7 @@ int mx_search(t_user *user_str) {
       // printf("KEK\n");
    }
 
-   sqlite3_close(db);
+   // sqlite3_close(db);
    return 0;
 }
 
