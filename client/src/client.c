@@ -1,5 +1,7 @@
 #include "server.h"
 
+// void set_button_clicked(GtkWidget *button, gpointer data);
+// void set_button_clicked(GtkEntry *button, gpointer type);
 
 GtkBuilder     *builder;
 
@@ -64,6 +66,7 @@ int main (int argc, char **argv) {
 
     GtkButton *Button_Log, *Button_Reg, *Button_Sub, *Button_Back1, *Button_Back2;
     GtkWindow *Login_Win, *Win_Reg, *Win_Load;
+    GtkEntry *Login_Field, *Pass_Field;
 
     gtk_init(&argc, &argv);
 
@@ -85,6 +88,24 @@ int main (int argc, char **argv) {
     g_signal_connect(Button_Back1, "clicked", G_CALLBACK(clicked), Login_Win);
     Button_Back2 = GTK_BUTTON(gtk_builder_get_object(builder, "backToLog"));
     g_signal_connect(Button_Back2, "clicked", G_CALLBACK(clicked), Login_Win);
+    Login_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
+    g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Login_Win);
+    Pass_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
+    g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Login_Win);
+
+
+    gtk_label_set_width_chars(GTK_LABEL(Login_Field), 12);
+    gtk_label_set_width_chars(GTK_LABEL(Pass_Field), 12);
+
+    Login_Field = gtk_entry_new();
+    Pass_Field = gtk_entry_new();
+
+    // set_button_clicked(GtkEntry *button, gpointer type){
+    // gtk_entry_set_text(GTK_ENTRY((GtkWidget*) Login_Field), "GtkEntry");
+    // gtk_entry_set_text(GTK_ENTRY((GtkWidget*) Pass_Field), "GtkEntry");
+    // }
+
+
 
     gtk_builder_connect_signals(builder, NULL);
 
@@ -148,6 +169,7 @@ int main (int argc, char **argv) {
 // Вместо GTK
     char type[20];
     memset(type, '\0', 20);
+
     printf("READ_TYPE\n");
     size_t logread = read(STDIN_FILENO, type, sizeof type);
 //
