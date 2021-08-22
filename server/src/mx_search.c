@@ -19,7 +19,7 @@ static int callback(void *data, int argc, char **argv, char **azColName){
    return 0;
 }
 
-int mx_search(t_user *user_str) {
+int mx_search(t_user *user_str, t_login *log_str) {
 
    sqlite3 *db = user_str->db;
    char *zErrMsg = 0;
@@ -45,11 +45,21 @@ int mx_search(t_user *user_str) {
       fprintf(stdout, "Operation done successfully\n");
    }
 
-    char response [30];
+   char response [30];
 
    if(user_str->status_user == LOGIN_OK) {
-      
+      log_str->login = (char*) malloc(sizeof (char) *strlen(user_str->login));
+      strcpy(log_str->login, user_str->login);
+      log_str->fd = user_str->fd;
+
+      printf("fffff: %s\n", log_str->login);
+      printf("nnnnn: %d\n", log_str->fd);
+
+       mx_push_back (&logged_in_users, log_str);
+      printf("ИЗ ПУШ\n");
+      // printf("ИЗ ЛИСТА: %s\n", user_str->list->log_str->login);
       strcpy(response, "successful login");
+       printf("После СТРКОПИ\n");
    }
    else {
       strcpy(response, "there is no user with such login");

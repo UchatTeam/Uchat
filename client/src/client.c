@@ -32,6 +32,9 @@ void * handle_server(void *user_str_void) {
     char buffs[256];
     char *res;
 
+    char username[20];
+    ssize_t userread;
+
     while(1) {
 
         memset(buffs, 0, sizeof(buffs));
@@ -48,7 +51,7 @@ void * handle_server(void *user_str_void) {
 			return NULL;
 		}
         // напечатаем в консоли то, что мы получили:
-            //  write(STDOUT_FILENO, buffs, sread);
+            // write(STDOUT_FILENO, buffs, sread);
                 // return 0;
 
         cJSON *user_json = json_parcer((const char*)buffs);
@@ -88,17 +91,28 @@ void * handle_server(void *user_str_void) {
             else {
                 write(STDOUT_FILENO, result, strlen(result));
                 write(STDOUT_FILENO, "\n", 1);
-                char *message = json_message();
-                char lmsg[4];
-                sprintf (lmsg, "%lu", strlen(message));
-                send (fd, lmsg,4,0);
-                send (fd, message, strlen(message), 0);
+                // while (1) { 
+                    char *username = json_username();
+                    //  memset(username, 0, sizeof(username));
+		            //  userread = read (STDOUT_FILENO, username, 20);
+                    printf("User Name: %s\n", username);
+                    char namelen[4];
+                    sprintf (namelen, "%lu", strlen(username));
+                    send (fd, namelen,4,0);
+                    send (fd, username, strlen(username), 0);
+
+                    char *message = json_message();
+                    char lmsg[4];
+                    sprintf (lmsg, "%lu", strlen(message));
+                    send (fd, lmsg,4,0);
+                    send (fd, message, strlen(message), 0);
+                // }
                 // user_str->status_user = 2;
             }
         }
 
         else if (strcmp(user_str->type, "message") == 0) {
-             json_parsemsg (user_json);
+            json_parsemsg (user_json);
         }
 
         // передадим на клиента ответ (он будет таким же, что мы и получили):

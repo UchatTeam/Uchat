@@ -1,10 +1,8 @@
 #include "server.h"
 
-t_list *mx_create_node (void *data);
-
-void mx_push_back (t_list **list, void *data) {
+void mx_push_back (t_list **list, t_login *log_str) {
     t_list *temp = *list;
-    t_list *new = mx_create_node(data);
+    t_list *new = mx_create_node(log_str);
 
     if (*list == NULL) {
         *list = new;

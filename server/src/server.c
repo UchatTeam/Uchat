@@ -1,6 +1,5 @@
 #include "server.h"
 
-
 // static int mx_strcmp(const char*s1, const char*s2) {
 
 //     while(*s1 != '\0' || *s2 != '\0') {
@@ -12,9 +11,11 @@
 //     return 0;
 // }
 
-
 void * handle_client(void *user_str_void) {
 	t_user *user_str = user_str_void;
+	t_login *log_str = (t_login *)malloc(sizeof(t_login *));
+	// printf("LIST: %p\n", (void*) user_str->list);
+	// t_list *list = NULL;
 	// printf("jjjjjj %p\n", (void*) user_str->db);
 	int fd = user_str->fd;
 	ssize_t nread;
@@ -90,20 +91,58 @@ void * handle_client(void *user_str_void) {
 		if (strcmp(user_str->type, "login") == 0) {
 			json_parcelog (user_json, user_str);
 			// while (user_str->status_user == LOGIN_OK)
-			mx_search(user_str);
-			
+			mx_search(user_str, log_str);	
+		 	//  printf("ИЗ ЛИСТА: %s\n", user_str->list->log_str->login);
+			//  printf("LIST2: %p\n", (void*) logged_in_users);
+
+		}
+	  	
+		if (strcmp(user_str->type, "username") == 0) {
+		  	// printf("Передаваемое: %s\n", bufftxt);
+	 	 	printf("Belarus\n");
+			  json_parseusername (user_json); 
+
 		}
 
 		if (strcmp(user_str->type, "message") == 0) {
-			printf("Передаваемое: %s\n", bufftxt);
-			json_parsemsg (user_json);  
-				for (int j = 0; j < MAX_CLIENTS; j++) {
-					if (fd != sockfds[j] && fd != 0) {
-						// printf("Huita");
-						send(sockfds[j], bufftxt, 256, 0);
-					}
-				}
+		  	printf("Передаваемое: %s\n", bufftxt);
+
+	 	 	json_parsemsg (user_json); 
+			int j = 0;
+
+			while(logged_in_users->next != NULL) {
+				printf("222222");
+				logged_in_users = logged_in_users->next;
+			
+		
+	// 	// for (int i = 0; i < 10; i++) {
+	// 	for (int j = 0; j < 10; j++) {
+	// 	// 	// printf("%d\n", user_str->list->log_str->fd);
+
+			if (logged_in_users->log_str->fd != sockfds[j] && logged_in_users->log_str->fd != 0) {
+		 			// printf("Huita\n");
+		 			send(sockfds[j], bufftxt, 256, 0);
+					j++;
+			}
+	 	}
+				// printf("ИЗ ЛИСТА: %s\n", logged_in_users->log_str->login);
+			// logged_in_users = logged_in_users->next;
 		}
+
+	// }	
+		// return 0;
+		// printf("ИЗ ЛИСТА: %s\n", list->log_str->login);
+
+		// if (strcmp(user_str->type, "message") == 0) {
+		// 	printf("Передаваемое: %s\n", bufftxt);
+		// 	json_parsemsg (user_json);  
+		// 		for (int j = 0; j < MAX_CLIENTS; j++) {
+		// 			if (fd != sockfds[j] && fd != 0) {
+		// 				// printf("Huita");
+		// 				send(sockfds[j], bufftxt, 256, 0);
+		// 			}
+		// 		}
+		// }
 
 		// mx_select();
 		// t_list *tmp = listnew;
@@ -139,7 +178,7 @@ void * handle_client(void *user_str_void) {
 		// }
 		// передадим на клиента ответ (он будет таким же, что мы и получили):
 		// write(fd, buff, nread);
-			free (bufftxt);
+			// free (bufftxt);
 	}
 	return NULL;
 }

@@ -25,6 +25,19 @@
 
 int sockfds[MAX_CLIENTS];
 
+typedef struct login {
+    int fd;
+    char *login;
+}             t_login;
+
+
+typedef struct s_list {
+    t_login *log_str;
+    struct s_list *next;
+}              t_list;
+
+t_list *logged_in_users;
+
 typedef struct user {
     sqlite3 *db;
     int      rc_db;
@@ -39,18 +52,6 @@ typedef struct user {
 typedef struct server {
     sqlite3 *db;
 }              t_server;
-
-
-typedef struct login {
-    int fd;
-    char *login;
-}             t_login;
-
-
-typedef struct s_list {
-    void *data;
-    struct s_list *next;
-}              t_list;
 
 
 
@@ -71,9 +72,11 @@ cJSON *json_parser (const char *user);
 // int mx_create_db();
 void mx_create_tb ();
 int mx_insert ();
-int mx_select();
-int mx_search();
+int mx_search(t_user *user_str, t_login *login);
 int json_parsemsg (cJSON *user_json);
 char *json_login_resp (char* response);
+t_list *mx_create_node (t_login *log_str);
+void mx_push_back (t_list **list, t_login *log_str);
+int json_parseusername (cJSON *user_json);
 
 #endif
