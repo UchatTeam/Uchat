@@ -6,8 +6,10 @@
 GtkBuilder     *builder;
 GtkButton      *Button_Log, *Button_Reg, *Button_Sub, *Button_Back1, *Button_Back2;
 GtkWindow      *Login_Win, *Win_Reg, *Win_Load;
-GtkEntry       *Login_Field, *Pass_Field;
+GtkEntry       *Log_Field, *Pass_Field;
 
+
+const char *Login;
 
 void clicked(GtkWidget* sender, GtkWindow* window)
 {
@@ -15,11 +17,26 @@ void clicked(GtkWidget* sender, GtkWindow* window)
     gtk_widget_show_all(GTK_WIDGET(window));
 }
 
+void clicked_l(GtkWidget* sender, GtkWindow* window)
+{
+    t_user *user_str = (t_user *)malloc(sizeof(t_user));
+    gtk_widget_hide(gtk_widget_get_toplevel(sender));
+    gtk_widget_show_all(GTK_WIDGET(window));
+    char *res = json_login(user_str);
+}
+
+void clicked_R(GtkWidget* sender, GtkWindow* window)
+{
+    gtk_widget_hide(gtk_widget_get_toplevel(sender));
+    gtk_widget_show_all(GTK_WIDGET(window));
+    char *res = json_registr();
+}
+
 void button_clicked(GtkEntry *LoginField, gpointer data, GtkWidget *widget)
 {
-    const gchar *text = gtk_entry_get_text(Login_Field);
+    Login = gtk_entry_get_text(Log_Field);
     //const gchar *pass = gtk_entry_get_text(Pass_Field);
-    g_print("clicked %s\n", text);
+    g_print("%s", Login);
     //g_print("clicked %s\n", pass);
 }
 
@@ -126,7 +143,26 @@ int main (int argc, char **argv) {
 
     int status;
     int status_addr;
+    
+        // создаём сокет
+    pthread_t spth;
+    t_user *user_str = (t_user *)malloc(sizeof(t_user));
+    // user_str->status_user = 0;
 
+    printf("%d\n", argc);
+    int fd = socket(AF_INET, SOCK_STREAM, 0);
+    user_str->sock_desk = fd;
+
+    struct sockaddr_in addr = {0};
+    addr.sin_family = AF_INET;
+    // порт должет совпадать с сервером
+    addr.sin_port = htons(atoi(argv[1]));
+    // задать адресс
+    // Inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr);
+    Connect(fd, (struct sockaddr *) &addr, sizeof addr);
+
+    ssize_t nread;
+    char buff[256];
 
     gtk_init(&argc, &argv);
 
@@ -140,6 +176,8 @@ int main (int argc, char **argv) {
 
     Button_Log = GTK_BUTTON(gtk_builder_get_object(builder, "LoginButton"));
     g_signal_connect(Button_Log, "clicked", G_CALLBACK(clicked), Win_Load);
+    g_signal_connect(Button_Log, "clicked", G_CALLBACK(button_clicked), Log_Field);
+
     Button_Reg = GTK_BUTTON(gtk_builder_get_object(builder, "RegistButt"));
     g_signal_connect(Button_Reg, "clicked", G_CALLBACK(clicked), Win_Reg);
     Button_Sub = GTK_BUTTON(gtk_builder_get_object(builder, "SubmitRegist"));
@@ -150,8 +188,8 @@ int main (int argc, char **argv) {
     g_signal_connect(Button_Back2, "clicked", G_CALLBACK(clicked), Login_Win);
     
     
-    Login_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
-    g_signal_connect(Login_Field, "connect", G_CALLBACK(button_clicked), Win_Load);
+    Log_Field = GTK_ENTRY(gtk_builder_get_object(builder, "LoginField"));
+    g_signal_connect(Log_Field, "connect", G_CALLBACK(button_clicked), Win_Load);
     //Pass_Field = GTK_ENTRY(gtk_builder_get_object(builder, "PassField"));
 
     gtk_widget_show_all(GTK_WIDGET(Login_Win));
@@ -172,25 +210,7 @@ int main (int argc, char **argv) {
 
     gtk_main();
 
-    // создаём сокет
-    pthread_t spth;
-    t_user *user_str = (t_user *)malloc(sizeof(t_user));
-    // user_str->status_user = 0;
 
-    printf("%d\n", argc);
-    int fd = socket(AF_INET, SOCK_STREAM, 0);
-    user_str->sock_desk = fd;
-
-    struct sockaddr_in addr = {0};
-    addr.sin_family = AF_INET;
-    // порт должет совпадать с сервером
-    addr.sin_port = htons(atoi(argv[1]));
-    // задать адресс
-    // Inet_pton(AF_INET, "127.0.0.1", &addr.sin_addr);
-    Connect(fd, (struct sockaddr *) &addr, sizeof addr);
-
-    ssize_t nread;
-    char buff[256];
 
 
     // int counter = 0;
